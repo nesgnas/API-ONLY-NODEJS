@@ -16,9 +16,12 @@ const dataRouter = (req, res) => {
         dataController.putData(req, res);
     } else if (method === 'DELETE' && path === '/api/data') {
         dataController.deleteData(req, res);
-    } else {
+    } else if (path.startsWith('/api/')) {  // Handle all other /api/ paths
         res.writeHead(404, { 'Content-Type': 'application/json' });
-        res.end(JSON.stringify({ message: 'Route not found' }));
+        res.end(JSON.stringify({ message: `Route ${method} ${path} not found` }));
+    } else {  // Handle non-API paths if necessary
+        res.writeHead(404, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ message: 'Resource not found' }));
     }
 };
 
